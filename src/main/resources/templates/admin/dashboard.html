@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard Admin</title>
+    <meta charset="UTF-8" />
+    
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a th:href="@{/admin/dashboard}">Accueil</a>
+            <a th:href="@{/preter}">Prêter un livre</a>
+            <a th:href="@{/prolongement_en_cours}">Prolongement à valider</a>
+            <a th:href="@{/reservation_en_cours}">Réservations à valider</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+    <main>
+        <h3>Bienvenue Administrateur <span th:text="${#authentication.name}">Admin</span></h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Restreint</th>
+                <th>Nombre d'exemplaires</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="livre : ${livres}">
+                <td th:text="${livre.titre}"></td>
+                <td th:text="${livre.auteur}"></td>
+                <td th:text="${livre.restreint ? 'Oui' : 'Non'}"></td>
+                <td th:text="${livre.exemplaires.size()}"></td>
+                
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>

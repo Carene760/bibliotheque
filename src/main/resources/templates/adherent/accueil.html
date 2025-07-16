@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Accueil Adhérent</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    
+</head>
+<body>
+
+   <nav>
+        <div class="nav-links">
+            <a th:href="@{/adherent/accueil}">Accueil</a>
+            <a th:href="@{/pret}">Prêter un livre</a>
+            <a th:href="@{/mes-prets}">Mes prêts</a>
+            <!-- <a th:href="@{/livres}">Livres</a> -->
+            <a th:href="@{/mes-reservations}">Mes réservations</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+    <main>
+        <h3>Bienvenue <span th:text="${sessionAdherent.prenom} + ' ' + ${sessionAdherent.nom}">Utilisateur</span>!</h3>
+        <p>Email : <span th:text="${sessionAdherent.email}"></span></p>
+
+        <p>Page réservée aux adhérents</p>
+
+        <h1>Liste des Livres</h1>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Restreint</th>
+                <th>Nombre d'exemplaires</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="livre : ${livres}">
+                <td th:text="${livre.titre}"></td>
+                <td th:text="${livre.auteur}"></td>
+                <td th:text="${livre.restreint ? 'Oui' : 'Non'}"></td>
+                <td th:text="${livre.exemplaires.size()}"></td>
+                <td>
+                    <a th:href="@{/reserver/{id}(id=${livre.id})}" class="btn-reserver">Réserver</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>

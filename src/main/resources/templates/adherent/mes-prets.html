@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mes Prêts</title>
+    
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a th:href="@{/adherent/accueil}">Accueil</a>
+            <a th:href="@{/pret}">Prêter un livre</a>
+            <a th:href="@{/mes-prets}">Mes prêts</a>
+            <!-- <a th:href="@{/livres}">Livres</a> -->
+            <a th:href="@{/mes-reservations}">Mes réservations</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+
+    
+    <main>
+        <h1>Mes Prêts</h1>
+
+    <div th:if="${prets == null or prets.empty}">
+        <p>Aucun prêt en cours</p>
+    </div>
+        <table th:unless="${prets == null or prets.empty}">
+        <thead>
+            <tr>
+                <th>Livre</th>
+                <th>Date début</th>
+                <th>Date retour prévue</th>
+                <th>Statut</th>
+                <th>État traitement</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="pret : ${prets}">
+                <td th:text="${pret.exemplaire?.livre?.titre} ?: 'N/A'">-</td>
+                <td th:text="${pret.dateDebut != null} ? ${#temporals.format(pret.dateDebut, 'dd/MM/yyyy HH:mm')} : 'N/A'"></td>
+                <td th:text="${pret.dateRetourPrevue != null} ? ${#temporals.format(pret.dateRetourPrevue, 'dd/MM/yyyy')} : 'N/A'"></td>
+                <td th:text="${pret.statutPret?.name()} ?: 'N/A'"></td>
+                <td th:text="${pret.etatTraitement?.name()} ?: 'N/A'"></td>
+                <td>
+                    <form th:if="${pret.statutPret?.name() == 'EN_COURS'}"
+                          th:action="@{/prolonger-pret/} + ${pret.id}"
+                          method="post">
+                        <button type="submit" class="btn-prolonger">Prolonger</button>
+                    </form>
+
+                    <form th:if="${pret.statutPret?.name() == 'EN_COURS' and pret.etatTraitement?.name() == 'VALIDE'}"
+                          th:action="@{/retourner-pret/} + ${pret.id}"
+                          method="get">
+                        <button type="submit" class="btn-retourner">Retourner</button>
+                    </form>
+
+                    <span th:unless="${pret.statutPret?.name() == 'EN_COURS'}">-</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <!-- <a th:href="@{/adherent/accueil}">Retour à l'accueil</a> -->
+
+    </main>
+    
+</body>
+</html>

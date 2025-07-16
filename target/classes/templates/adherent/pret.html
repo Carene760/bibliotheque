@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prêter un Livre</title>
+    <meta charset="UTF-8" />
+   
+</head>
+<body>
+   <nav>
+        <div class="nav-links">
+            <a th:href="@{/adherent/accueil}">Accueil</a>
+            <a th:href="@{/pret}">Prêter un livre</a>
+            <a th:href="@{/mes-prets}">Mes prêts</a>
+            <!-- <a th:href="@{/livres}">Livres</a> -->
+            <a th:href="@{/mes-reservations}">Mes réservations</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+    <main>
+        <h1>Prêt de Livre</h1>
+
+        <form th:action="@{/pret}" method="post">
+            <label for="titre">Titre du livre :</label>
+            <input type="text" id="titre" name="titre" placeholder="Ex: Le Petit Prince" />
+
+            <label for="auteur">Auteur :</label>
+            <input type="text" id="auteur" name="auteur" placeholder="Ex: Antoine de Saint-Exupéry" />
+
+            <label for="datePret">Date de prêt :</label>
+            <input type="datetime-local" id="datePret" name="datePret" />
+
+            <button type="submit">Rechercher</button>
+        </form>
+
+        <!-- <a th:href="@{/home-adherent}">Retour à l’accueil</a> -->
+
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    </main>
+    
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Mes Réservations</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+</head>
+
+<body>
+    <nav>
+        <div class="nav-links">
+            <a th:href="@{/adherent/accueil}">Accueil</a>
+            <a th:href="@{/pret}">Prêter un livre</a>
+            <a th:href="@{/mes-prets}">Mes prêts</a>
+            <!-- <a th:href="@{/livres}">Livres</a> -->
+            <a th:href="@{/mes-reservations}">Mes réservations</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+    <main>
+
+    <h1>Mes Réservations</h1>
+
+    <div th:if="${reservations == null or reservations.empty}">
+        <p>Aucune réservation trouvée.</p>
+    </div>
+
+    <table th:unless="${reservations == null or reservations.empty}">
+        <thead>
+            <tr>
+                <th>Titre du livre</th>
+                <th>Auteur</th>
+                <th>Date de réservation</th>
+                <th>Date à réserver</th>
+                <th>État</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="reservation : ${reservations}">
+                <td th:text="${reservation.exemplaire?.livre?.titre} ?: 'Inconnu'">Titre</td>
+                <td th:text="${reservation.exemplaire?.livre?.auteur} ?: 'Inconnu'">Auteur</td>
+                <td th:text="${reservation.dateReservation != null} ? ${#temporals.format(reservation.dateReservation, 'dd/MM/yyyy HH:mm')} : 'Non définie'">Date réservation</td>
+                <td th:text="${reservation.dateAReserver != null} ? ${#temporals.format(reservation.dateAReserver, 'dd/MM/yyyy')} : 'Non définie'">Date à réserver</td>
+                <td th:text="${reservation.etat}">État</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- <p><a th:href="@{/adherent/accueil}">Retour à l'accueil</a></p> -->
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Retourner un prêt</title>
+    <meta charset="UTF-8" />
+    
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a th:href="@{/adherent/accueil}">Accueil</a>
+            <a th:href="@{/pret}">Prêter un livre</a>
+            <a th:href="@{/mes-prets}">Mes prêts</a>
+            <!-- <a th:href="@{/livres}">Livres</a> -->
+            <a th:href="@{/mes-reservations}">Mes réservations</a>
+        </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Se déconnecter</button>
+        </form>
+    </nav>
+
+    <main>
+        <h1>Retourner un prêt</h1>
+        
+        <form th:action="@{/retourner-pret/} + ${pret.id}" method="post">
+            <input type="hidden" th:value="${pret.id}" name="pretId" />
+            
+            <div>
+                <label>Livre:</label>
+                <span th:text="${pret.exemplaire.livre.titre}">Titre du livre</span>
+            </div>
+            
+            <div>
+                <label>Date de retour prévue:</label>
+                <span th:text="${#temporals.format(pret.dateRetourPrevue, 'dd/MM/yyyy')}">00/00/0000</span>
+            </div>
+            
+            <div>
+                <label for="dateRetourEffective">Date de retour effective:</label>
+                <input type="date" id="dateRetourEffective" name="dateRetourEffective" 
+                       th:value="${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')}" required />
+            </div>
+            
+            <button type="submit">Confirmer le retour</button>
+        </form>
+    </main>
+</body>
+</html>
